@@ -35,8 +35,13 @@ class Apka(app.Canvas):
 
     def on_key_press(self, event):
         if event.key == ' ':
-            self.program['color'] = np.random.rand(3)
-            self.show()
+            # self.program['color'] = np.random.rand(4, 3)
+            self.program['color'] = np.array([[1, 0, 0],
+                                             [0, 0, 0],
+                                             [0, 0, 1],
+                                             [1, 0, 0]])
+            print(np.random.rand(4, 3))
+            self.update()
 
 
 apka = Apka()
