@@ -1,7 +1,11 @@
-attribute vec2 pos;
-attribute vec3 color;
-varying vec3 v_color;
+attribute vec3 pos;
+attribute vec4 color;
+varying vec4 v_color;
+uniform mat4 model;
+uniform mat4 projection;
+uniform mat4 view;
+
 void main() {
-    gl_Position = vec4(pos, 0, 1);
+    gl_Position = projection * view * model * vec4(pos, 1);
     v_color = color;
 }

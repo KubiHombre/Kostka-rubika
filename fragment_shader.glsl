@@ -1,5 +1,6 @@
-varying vec3 v_color;
+varying vec4 v_color;
+uniform float mask;
 
 void main() {
-    gl_FragColor = vec4(v_color, 1);
+    gl_FragColor = mask * vec4(v_color);
 }
