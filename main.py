@@ -15,6 +15,8 @@ class Apka(app.Canvas):
         self.shapes = []
         self.translations = []
         self.perspektywa = 0
+        self.obr = 0
+        self.obrW = rotate(0, (0, 1, 0))
 
         self.gen_scene()
         self.time = 0
@@ -43,6 +45,7 @@ class Apka(app.Canvas):
         self.translations.append((-0.5, 0.51, 1.51))
         self.shapes.append(self.gen_cube())
         self.translations.append((0.51, 0.51, 1.51))
+        print(self.gen_cube())
 
     def gen_cube(self):
         shape = dict()
@@ -66,6 +69,7 @@ class Apka(app.Canvas):
             self.draw_shape(shape, trans)
 
     def draw_shape(self, shape, translation=(0, 0, 0)):
+        shape['program']['obr'] = self.obrW
         shape['program']['view'] = self.view
         shape['program']['projection'] = self.projection
         shape['program']['model'] = self.model.dot(translate(translation))
@@ -81,10 +85,13 @@ class Apka(app.Canvas):
             self.view = translate((self.perspektywa, 0, -8))
             shape['program']['view'] = self.view
             self.show()
+        if event.key == "Q":
+            self.obr += 10
+            self.obrW = rotate(self.obr, (0, 0, 1))
 
     def on_timer(self, event):
         self.time += 1 / 60
-        self.model = rotate(45, (0, 1, 0))
+        self.view = rotate(self.time*180/np.pi, (0, 1, 0)).dot(translate((0, 0, -8)))
         self.show()
 
 
