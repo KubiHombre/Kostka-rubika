@@ -7,6 +7,6 @@ uniform mat4 view;
 uniform mat4 obr;
 
 void main() {
-    gl_Position = projection * obr * view * model * vec4(pos, 1);
+    gl_Position = projection * view  * obr * model * vec4(pos, 1);
     v_color = color;
 }

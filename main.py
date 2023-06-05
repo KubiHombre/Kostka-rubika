@@ -1,12 +1,11 @@
 from vispy import app, gloo
 import numpy as np
 from vispy.util.transforms import rotate, translate, perspective
-from vispy.geometry.generation import create_box
 
 
 class Apka(app.Canvas):
     def __init__(self):
-        super().__init__(title="Hello world!", size=(800, 800))
+        super().__init__(title="Kostka Rubika", size=(800, 800))
         gloo.set_state(depth_test=True)
 
         self.vertex_shader = self.load_shader("vertex_shader.glsl")
@@ -15,9 +14,10 @@ class Apka(app.Canvas):
         self.shapes = []
         self.translations = []
         self.perspektywa = 0
-        self.obr = 0
+        self.block = False
+        self.obrx = 0
+        self.obry = 0
         self.obrW = rotate(0, (0, 1, 0))
-
         self.gen_scene()
         self.time = 0
         self.timer = app.Timer(1 / 60, connect=self.on_timer)
@@ -27,34 +27,158 @@ class Apka(app.Canvas):
         self.model = np.eye(4, dtype=np.float32)
 
     def gen_scene(self):
+        # model kostki
         self.shapes.append(self.gen_cube())
-        self.translations.append((-1.51, -1.51, 1.51))
+        self.translations.append((0, 0, 1.05))
         self.shapes.append(self.gen_cube())
-        self.translations.append((-0.5, -1.51, 1.51))
+        self.translations.append((0, 1.05, 1.05))
         self.shapes.append(self.gen_cube())
-        self.translations.append((0.51, -1.51, 1.51))
+        self.translations.append((0, -1.05, 1.05))
         self.shapes.append(self.gen_cube())
-        self.translations.append((-1.51, -0.5, 1.51))
+        self.translations.append((1.05, 0, 1.05))
         self.shapes.append(self.gen_cube())
-        self.translations.append((-0.5, -0.5, 1.51))
+        self.translations.append((1.05, 1.05, 1.05))
         self.shapes.append(self.gen_cube())
-        self.translations.append((0.51, -0.5, 1.51))
+        self.translations.append((1.05, -1.05, 1.05))
         self.shapes.append(self.gen_cube())
-        self.translations.append((-1.51, 0.51, 1.51))
+        self.translations.append((-1.05, 0, 1.05))
         self.shapes.append(self.gen_cube())
-        self.translations.append((-0.5, 0.51, 1.51))
+        self.translations.append((-1.05, 1.05, 1.05))
         self.shapes.append(self.gen_cube())
-        self.translations.append((0.51, 0.51, 1.51))
-        print(self.gen_cube())
+        self.translations.append((-1.05, -1.05, 1.05))
+
+        self.shapes.append(self.gen_cube())
+        self.translations.append((0, 0, -1.05))
+        self.shapes.append(self.gen_cube())
+        self.translations.append((0, 1.05, -1.05))
+        self.shapes.append(self.gen_cube())
+        self.translations.append((0, -1.05, -1.05))
+        self.shapes.append(self.gen_cube())
+        self.translations.append((1.05, 0, -1.05))
+        self.shapes.append(self.gen_cube())
+        self.translations.append((1.05, 1.05, -1.05))
+        self.shapes.append(self.gen_cube())
+        self.translations.append((1.05, -1.05, -1.05))
+        self.shapes.append(self.gen_cube())
+        self.translations.append((-1.05, 0, -1.05))
+        self.shapes.append(self.gen_cube())
+        self.translations.append((-1.05, 1.05, -1.05))
+        self.shapes.append(self.gen_cube())
+        self.translations.append((-1.05, -1.05, -1.05))
+
+        self.shapes.append(self.gen_cube())
+        self.translations.append((0, 1.05, 0))
+        self.shapes.append(self.gen_cube())
+        self.translations.append((0, -1.05, 0))
+        self.shapes.append(self.gen_cube())
+        self.translations.append((1.05, 0, 0))
+        self.shapes.append(self.gen_cube())
+        self.translations.append((1.05, 1.05, 0))
+        self.shapes.append(self.gen_cube())
+        self.translations.append((1.05, -1.05, 0))
+        self.shapes.append(self.gen_cube())
+        self.translations.append((-1.05, 0, 0))
+        self.shapes.append(self.gen_cube())
+        self.translations.append((-1.05, 1.05, 0))
+        self.shapes.append(self.gen_cube())
+        self.translations.append((-1.05, -1.05, 0))
 
     def gen_cube(self):
         shape = dict()
-        shape['program'] = gloo.Program(self.vertex_shader, self.fragment_shader)
-        V, I, L = create_box()
-        shape['program']['pos'] = V['position']
-        shape['program']['color'] = V['color']
-        shape['triangle_indices'] = gloo.IndexBuffer(I)
-        shape['line_indices'] = gloo.IndexBuffer(L)
+        shape['program'] = gloo.Program(self.vertex_shader, self.fragment_shader, 24)
+
+        # Generowanie płaszczyzn
+        colors = np.array([
+            # Ścianka 1 (przednia)
+            [1, 0, 0, 0],  # Czerwony
+            [1, 0, 0, 0],  # Czerwony
+            [1, 0, 0, 0],  # Czerwony
+            [1, 0, 0, 0],  # Czerwony
+            # Ścianka 2 (tylna)
+            [0, 1, 0, 0],  # Zielony
+            [0, 1, 0, 0],  # Zielony
+            [0, 1, 0, 0],  # Zielony
+            [0, 1, 0, 0],  # Zielony
+            # Ścianka 3 (lewa)
+            [0, 0, 1, 0],  # Niebieski
+            [0, 0, 1, 0],  # Niebieski
+            [0, 0, 1, 0],  # Niebieski
+            [0, 0, 1, 0],  # Niebieski
+            # Ścianka 4 (prawa)
+            [1, 1, 0, 0],  # Żółty
+            [1, 1, 0, 0],  # Żółty
+            [1, 1, 0, 0],  # Żółty
+            [1, 1, 0, 0],  # Żółty
+            # Ścianka 5 (górna)
+            [1, 0, 1, 0],  # Magenta
+            [1, 0, 1, 0],  # Magenta
+            [1, 0, 1, 0],  # Magenta
+            [1, 0, 1, 0],  # Magenta
+            # Ścianka 6 (dolna)
+            [0, 1, 1, 0],  # Cyjan
+            [0, 1, 1, 0],  # Cyjan
+            [0, 1, 1, 0],  # Cyjan
+            [0, 1, 1, 0]  # Cyjan
+        ], dtype=np.float32)
+
+        positions = np.array([
+            [-0.5, -0.5, -0.5],  # Wierzchołek 0
+            [0.5, -0.5, -0.5],  # Wierzchołek 1
+            [0.5, 0.5, -0.5],  # Wierzchołek 2
+            [-0.5, 0.5, -0.5],  # Wierzchołek 3
+
+            [-0.5, -0.5, 0.5],  # Wierzchołek 4
+            [0.5, -0.5, 0.5],  # Wierzchołek 5
+            [0.5, 0.5, 0.5],  # Wierzchołek 6
+            [-0.5, 0.5, 0.5],  # Wierzchołek 7
+
+            [-0.5, 0.5, 0.5],  # Wierzchołek 8
+            [-0.5, -0.5, 0.5],  # Wierzchołek 9
+            [-0.5, -0.5, -0.5],  # Wierzchołek 10
+            [-0.5, 0.5, -0.5],  # Wierzchołek 11
+
+            [0.5, 0.5, 0.5],  # Wierzchołek 8
+            [0.5, -0.5, 0.5],  # Wierzchołek 9
+            [0.5, -0.5, -0.5],  # Wierzchołek 10
+            [0.5, 0.5, -0.5],  # Wierzchołek 11
+
+            [0.5, -0.5, 0.5],  # Wierzchołek 16
+            [0.5, -0.5, -0.5],  # Wierzchołek 17
+            [-0.5, -0.5, -0.5],  # Wierzchołek 18
+            [-0.5, -0.5, 0.5],  # Wierzchołek 19
+
+            [0.5, 0.5, 0.5],  # Wierzchołek 16
+            [0.5, 0.5, -0.5],  # Wierzchołek 17
+            [-0.5, 0.5, -0.5],  # Wierzchołek 18
+            [-0.5, 0.5, 0.5],  # Wierzchołek 19
+        ], dtype=np.float32)
+
+        # Macierz przechowująca indeksy wierzchołków, które tworzą ścianki sześcianu
+        indices = np.array([
+            # Ścianka 1 (przednia)
+            [0, 1, 2],
+            [2, 3, 0],
+            # Ścianka 2 (tylna)
+            [4, 5, 6],
+            [6, 7, 4],
+            # Ścianka 3 (lewa)
+            [8, 9, 10],
+            [10, 11, 8],
+            # Ścianka 4 (prawa)
+            [12, 13, 14],
+            [14, 15, 12],
+            # Ścianka 5 (górna)
+            [16, 17, 18],
+            [18, 19, 16],
+            # Ścianka 6 (dolna)
+            [20, 21, 22],
+            [22, 23, 20]
+        ], dtype=np.uint32)
+
+        shape['program']['pos'] = positions
+        shape['program']['color'] = colors
+        shape['triangle_indices'] = gloo.IndexBuffer(indices)
+
         return shape
 
     @staticmethod
@@ -73,25 +197,32 @@ class Apka(app.Canvas):
         shape['program']['view'] = self.view
         shape['program']['projection'] = self.projection
         shape['program']['model'] = self.model.dot(translate(translation))
-        shape['program']['mask'] = 1
-        shape['program'].draw("triangles", shape['triangle_indices'])
-        shape['program']['mask'] = 0
-        shape['program'].draw("lines", shape['line_indices'])
+        shape['program'].draw('triangles', shape['triangle_indices'], 36)
 
     def on_key_press(self, event):
-        if event.key == " ":
-            shape = dict()
-            self.perspektywa += 1
-            self.view = translate((self.perspektywa, 0, -8))
-            shape['program']['view'] = self.view
-            self.show()
-        if event.key == "Q":
-            self.obr += 10
-            self.obrW = rotate(self.obr, (0, 0, 1))
+        shape = dict()
+        if event.key == "S":
+            self.obrx -= 30
+            self.obrW = rotate(self.obrx, (1, 0, 0)).dot(rotate(self.obry, (0, 1, 0)))
+        if event.key == "D":
+            self.obry += 30
+            self.obrW = rotate(self.obrx, (1, 0, 0)).dot(rotate(self.obry, (0, 1, 0)))
+        if event.key == "W":
+            self.obrx += 30
+            self.obrW = rotate(self.obrx, (1, 0, 0)).dot(rotate(self.obry, (0, 1, 0)))
+        if event.key == "A":
+            self.obry -= 30
+            self.obrW = rotate(self.obrx, (1, 0, 0)).dot(rotate(self.obry, (0, 1, 0)))
+        if event.key == "B":
+            if not self.block:
+                self.block = True
+            else:
+                self.block = False
 
     def on_timer(self, event):
-        self.time += 1 / 60
-        self.view = rotate(self.time*180/np.pi, (0, 1, 0)).dot(translate((0, 0, -8)))
+        if not self.block:
+            self.time += 1 / 60
+            self.view = rotate(self.time*180/np.pi, (0, 1, 0)).dot(translate((0, 0, -8)))
         self.show()
 
 
