@@ -190,10 +190,19 @@ class Apka(app.Canvas):
     def on_draw(self, event):
         gloo.clear()
         for shape, trans in zip(self.shapes, self.translations):
+            shape['program']['obr'] = rotate(0, (1, 0, 0)).dot(rotate(0, (0, 1, 0)))
+            shape['program']['obr'] = self.obrW
             self.draw_shape(shape, trans)
+        # i = 0
+        # for shape, trans in zip(self.shapes, self.translations):
+        #     if i < 5:
+        #         shape['program']['obr'] = rotate(0, (1, 0, 0)).dot(rotate(0, (0, 1, 0)))
+        #     else:
+        #         shape['program']['obr'] = self.obrW
+        #     i += 1
+        #     self.draw_shape(shape, trans)
 
     def draw_shape(self, shape, translation=(0, 0, 0)):
-        shape['program']['obr'] = self.obrW
         shape['program']['view'] = self.view
         shape['program']['projection'] = self.projection
         shape['program']['model'] = self.model.dot(translate(translation))
