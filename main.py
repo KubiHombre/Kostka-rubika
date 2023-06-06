@@ -13,21 +13,32 @@ class Apka(app.Canvas):
 
         self.shapes = []
         self.translations = []
-        self.perspektywa = 0
-        self.block = False
+        self.rotations = []
+        self.block = True
         self.obrx = 0
         self.obry = 0
+        self.rot_0 = 0
+        self.rot_1 = 0
+        self.rot_2 = 0
+        self.rot_3 = 0
+        self.rot_4 = 0
+        self.rot_5 = 0
+        self.rot_6 = 0
+        self.rot_7 = 0
+        self.rot_8 = 0
         self.obrW = rotate(0, (0, 1, 0))
         self.gen_scene()
         self.time = 0
         self.timer = app.Timer(1 / 60, connect=self.on_timer)
         self.timer.start()
-        self.view = translate((self.perspektywa, 0, -8))
+        self.view = translate((0, 0, -8))
         self.projection = perspective(80, 1, 2, 10)
         self.model = np.eye(4, dtype=np.float32)
 
     def gen_scene(self):
         # model kostki
+
+        # ścianka 0
         self.shapes.append(self.gen_cube())
         self.translations.append((0, 0, 1.05))
         self.shapes.append(self.gen_cube())
@@ -47,6 +58,7 @@ class Apka(app.Canvas):
         self.shapes.append(self.gen_cube())
         self.translations.append((-1.05, -1.05, 1.05))
 
+        # ścianka 1
         self.shapes.append(self.gen_cube())
         self.translations.append((0, 0, -1.05))
         self.shapes.append(self.gen_cube())
@@ -66,6 +78,7 @@ class Apka(app.Canvas):
         self.shapes.append(self.gen_cube())
         self.translations.append((-1.05, -1.05, -1.05))
 
+        # ścianka 2
         self.shapes.append(self.gen_cube())
         self.translations.append((0, 1.05, 0))
         self.shapes.append(self.gen_cube())
@@ -189,10 +202,62 @@ class Apka(app.Canvas):
 
     def on_draw(self, event):
         gloo.clear()
+        i = 0
         for shape, trans in zip(self.shapes, self.translations):
-            shape['program']['obr'] = rotate(0, (1, 0, 0)).dot(rotate(0, (0, 1, 0)))
-            shape['program']['obr'] = self.obrW
+            if i == 0:
+                self.rotations = rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_6, (1, 0, 0))).dot(rotate(self.rot_7, (0, 1, 0)))
+            if i == 1:
+                self.rotations = rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_6, (1, 0, 0)))
+            if i == 2:
+                self.rotations = rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_3, (0, 1, 0))).dot(rotate(self.rot_6, (1, 0, 0)))
+            if i == 3:
+                self.rotations = rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_4, (1, 0, 0))).dot(rotate(self.rot_7, (0, 1, 0)))
+            if i == 4:
+                self.rotations = rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_4, (1, 0, 0)))
+            if i == 5:
+                self.rotations = rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_3, (0, 1, 0))).dot(rotate(self.rot_4, (1, 0, 0)))
+            if i == 6:
+                self.rotations = rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_5, (1, 0, 0))).dot(rotate(self.rot_7, (0, 1, 0)))
+            if i == 7:
+                self.rotations = rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_5, (1, 0, 0)))
+            if i == 8:
+                self.rotations = rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_3, (0, 1, 0))).dot(rotate(self.rot_5, (1, 0, 0)))
+            if i == 9:
+                self.rotations = rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_6, (1, 0, 0))).dot(rotate(self.rot_7, (0, 1, 0)))
+            if i == 10:
+                self.rotations = rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_6, (1, 0, 0)))
+            if i == 11:
+                self.rotations = rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_3, (0, 1, 0))).dot(rotate(self.rot_6, (1, 0, 0)))
+            if i == 12:
+                self.rotations = rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_4, (1, 0, 0))).dot(rotate(self.rot_7, (0, 1, 0)))
+            if i == 13:
+                self.rotations = rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_4, (1, 0, 0)))
+            if i == 14:
+                self.rotations = rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_3, (0, 1, 0))).dot(rotate(self.rot_4, (1, 0, 0)))
+            if i == 15:
+                self.rotations = rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_5, (1, 0, 0))).dot(rotate(self.rot_7, (0, 1, 0)))
+            if i == 16:
+                self.rotations = rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_5, (1, 0, 0)))
+            if i == 17:
+                self.rotations = rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_3, (0, 1, 0))).dot(rotate(self.rot_5, (1, 0, 0)))
+            if i == 18:
+                self.rotations = rotate(self.rot_8, (0, 0, 1)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_6, (1, 0, 0)))
+            if i == 19:
+                self.rotations = rotate(self.rot_8, (0, 0, 1)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_6, (1, 0, 0)))
+            if i == 20:
+                self.rotations = rotate(self.rot_4, (1, 0, 0)).dot(rotate(self.rot_7, (0, 1, 0))).dot(rotate(self.rot_8, (0, 0, 1)))
+            if i == 21:
+                self.rotations = rotate(self.rot_4, (1, 0, 0)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_8, (0, 0, 1)))
+            if i == 22:
+                self.rotations = rotate(self.rot_3, (0, 1, 0)).dot(rotate(self.rot_4, (1, 0, 0))).dot(rotate(self.rot_8, (0, 0, 1)))
+            if i == 23:
+                self.rotations = rotate(self.rot_5, (1, 0, 0)).dot(rotate(self.rot_7, (0, 1, 0))).dot(rotate(self.rot_8, (0, 0, 1)))
+            if i == 24:
+                self.rotations = rotate(self.rot_5, (1, 0, 0)).dot(rotate(self.rot_8, (0, 0, 1))).dot(rotate(self.rot_2, (0, 1, 0)))
+            if i == 25:
+                self.rotations = rotate(self.rot_5, (1, 0, 0)).dot(rotate(self.rot_8, (0, 0, 1))).dot(rotate(self.rot_3, (0, 1, 0)))
             self.draw_shape(shape, trans)
+            i += 1
         # i = 0
         # for shape, trans in zip(self.shapes, self.translations):
         #     if i < 5:
@@ -205,7 +270,9 @@ class Apka(app.Canvas):
     def draw_shape(self, shape, translation=(0, 0, 0)):
         shape['program']['view'] = self.view
         shape['program']['projection'] = self.projection
-        shape['program']['model'] = self.model.dot(translate(translation))
+        shape['program']['obr'] = self.obrW
+        shape['program']['model'] = self.model.dot(self.rotations)\
+            .dot(translate(translation))
         shape['program'].draw('triangles', shape['triangle_indices'], 36)
 
     def on_key_press(self, event):
@@ -222,11 +289,36 @@ class Apka(app.Canvas):
         if event.key == "A":
             self.obry -= 30
             self.obrW = rotate(self.obrx, (1, 0, 0)).dot(rotate(self.obry, (0, 1, 0)))
+        #
+        if event.key == "Z":
+            self.rot_0 += 90
+        if event.key == "X":
+            self.rot_1 += 90
+        if event.key == "C":
+            self.rot_2 += 90
+        if event.key == "V":
+            self.rot_3 += 90
         if event.key == "B":
+            self.rot_4 += 90
+        if event.key == "N":
+            self.rot_5 += 90
+        if event.key == "Q":
             if not self.block:
                 self.block = True
             else:
                 self.block = False
+        if event.key == "R":
+            self.obrx = 0
+            self.obry = 0
+            self.rot_0 = 0
+            self.rot_1 = 0
+            self.rot_2 = 0
+            self.rot_3 = 0
+            self.rot_4 = 0
+            self.rot_5 = 0
+            self.rot_6 = 0
+            self.rot_7 = 0
+            self.rot_8 = 0
 
     def on_timer(self, event):
         if not self.block:
