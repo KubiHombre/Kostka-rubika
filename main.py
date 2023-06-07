@@ -15,6 +15,7 @@ class Apka(app.Canvas):
         self.translations = []
         self.rotations = []
         self.i = 0
+        self.key_block = False
         for i in range(26):
             self.rotations.append(np.eye(4, dtype=np.float32))
         self.block = True
@@ -37,6 +38,35 @@ class Apka(app.Canvas):
         self.view = translate((0, 0, -8))
         self.projection = perspective(80, 1, 2, 10)
         self.model = np.eye(4, dtype=np.float32)
+        self.cube00 = 0
+        self.cube01 = 1
+        self.cube02 = 2
+        self.cube03 = 3
+        self.cube04 = 4
+        self.cube05 = 5
+        self.cube06 = 6
+        self.cube07 = 7
+        self.cube08 = 8
+        self.cube09 = 9
+        self.cube10 = 10
+        self.cube11 = 11
+        self.cube12 = 12
+        self.cube13 = 13
+        self.cube14 = 14
+        self.cube15 = 15
+        self.cube16 = 16
+        self.cube17 = 17
+        self.cube18 = 18
+        self.cube19 = 19
+        self.cube20 = 20
+        self.cube21 = 21
+        self.cube22 = 22
+        self.cube23 = 23
+        self.cube24 = 24
+        self.cube25 = 25
+
+
+
 
     def gen_scene(self):
         # model kostki
@@ -207,86 +237,212 @@ class Apka(app.Canvas):
         gloo.clear()
         self.i = 0
         for shape, trans in zip(self.shapes, self.translations):
-            if self.i == 0:
+            if self.i == self.cube00:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_6, (1, 0, 0))).dot(rotate(self.rot_7, (0, 1, 0))))
-            if self.i == 1:
+            if self.i == self.cube01:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_6, (1, 0, 0))))
-            if self.i == 2:
+            if self.i == self.cube02:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_3, (0, 1, 0))).dot(rotate(self.rot_6, (1, 0, 0))))
-            if self.i == 3:
+            if self.i == self.cube03:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_4, (1, 0, 0))).dot(rotate(self.rot_7, (0, 1, 0))))
-            if self.i == 4:
+            if self.i == self.cube04:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_4, (1, 0, 0))))
-            if self.i == 5:
+            if self.i == self.cube05:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_3, (0, 1, 0))).dot(rotate(self.rot_4, (1, 0, 0))))
-            if self.i == 6:
+            if self.i == self.cube06:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_5, (1, 0, 0))).dot(rotate(self.rot_7, (0, 1, 0))))
-            if self.i == 7:
+            if self.i == self.cube07:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_5, (1, 0, 0))))
-            if self.i == 8:
+            if self.i == self.cube08:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_0, (0, 0, 1)).dot(rotate(self.rot_3, (0, 1, 0))).dot(rotate(self.rot_5, (1, 0, 0))))
-            if self.i == 9:
+            if self.i == self.cube09:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_6, (1, 0, 0))).dot(rotate(self.rot_7, (0, 1, 0))))
-            if self.i == 10:
+            if self.i == self.cube10:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_6, (1, 0, 0))))
-            if self.i == 11:
+            if self.i == self.cube11:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_3, (0, 1, 0))).dot(rotate(self.rot_6, (1, 0, 0))))
-            if self.i == 12:
+            if self.i == self.cube12:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_4, (1, 0, 0))).dot(rotate(self.rot_7, (0, 1, 0))))
-            if self.i == 13:
+            if self.i == self.cube13:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_4, (1, 0, 0))))
-            if self.i == 14:
+            if self.i == self.cube14:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_3, (0, 1, 0))).dot(rotate(self.rot_4, (1, 0, 0))))
-            if self.i == 15:
+            if self.i == self.cube15:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_5, (1, 0, 0))).dot(rotate(self.rot_7, (0, 1, 0))))
-            if self.i == 16:
+            if self.i == self.cube16:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_5, (1, 0, 0))))
-            if self.i == 17:
+            if self.i == self.cube17:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_1, (0, 0, 1)).dot(rotate(self.rot_3, (0, 1, 0))).dot(rotate(self.rot_5, (1, 0, 0))))
-            if self.i == 18:
+            if self.i == self.cube18:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_8, (0, 0, 1)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_6, (1, 0, 0))))
-            if self.i == 19:
+            if self.i == self.cube19:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_8, (0, 0, 1)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_6, (1, 0, 0))))
-            if self.i == 20:
+            if self.i == self.cube20:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_4, (1, 0, 0)).dot(rotate(self.rot_7, (0, 1, 0))).dot(rotate(self.rot_8, (0, 0, 1))))
-            if self.i == 21:
+            if self.i == self.cube21:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_4, (1, 0, 0)).dot(rotate(self.rot_2, (0, 1, 0))).dot(rotate(self.rot_8, (0, 0, 1))))
-            if self.i == 22:
+            if self.i == self.cube22:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_3, (0, 1, 0)).dot(rotate(self.rot_4, (1, 0, 0))).dot(rotate(self.rot_8, (0, 0, 1))))
-            if self.i == 23:
+            if self.i == self.cube23:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_5, (1, 0, 0)).dot(rotate(self.rot_7, (0, 1, 0))).dot(rotate(self.rot_8, (0, 0, 1))))
-            if self.i == 24:
+            if self.i == self.cube24:
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_5, (1, 0, 0)).dot(rotate(self.rot_8, (0, 0, 1))).dot(rotate(self.rot_2, (0, 1, 0))))
-            if self.i == 25:
+            if self.i == self.cube25:
                 self.rotations[self.i] = self.rotations[self.i].dot(rotate(self.rot_5, (1, 0, 0)).dot(rotate(self.rot_8, (0, 0, 1))).dot(
                     rotate(self.rot_3, (0, 1, 0))))
             self.draw_shape(shape, trans)
             self.i += 1
+        if self.rot_0 == 90:
+
+            a = self.cube01
+            self.cube01 = self.cube03
+            b = self.cube02
+            self.cube02 = self.cube06
+            self.cube03 = b
+            c = self.cube04
+            self.cube04 = self.cube05
+            self.cube05 = self.cube08
+            self.cube06 = a
+            d = self.cube07
+            self.cube07 = c
+            self.cube08 = d
+
+        if self.rot_1 == 90:
+            a = self.cube10
+            self.cube10 = self.cube12
+            self.cube12 = self.cube11
+            b = self.cube13
+            self.cube13 = self.cube14
+            self.cube14 = self.cube17
+            c = self.cube15
+            self.cube15 = a
+            d = self.cube16
+            self.cube16 = b
+            self.cube17 = d
+            self.cube11 = c
+
+        if self.rot_2 == 90:
+            a = self.cube07
+            self.cube07 = self.cube16
+            b = self.cube01
+            self.cube01 = self.cube24
+            c = self.cube04
+            self.cube04 = a
+            self.cube24 = self.cube10
+            self.cube10 = self.cube21
+            self.cube21 = b
+            self.cube16 = self.cube13
+            self.cube13 = c
+
+        if self.rot_3 == 90:
+            a = self.cube08
+            self.cube08 = self.cube17
+            b = self.cube02
+            self.cube02 = self.cube25
+            d = self.cube05
+            self.cube05 = a
+            self.cube25 = self.cube11
+            c = self.cube22
+            self.cube22 = b
+            self.cube17 = self.cube14
+            self.cube11 = c
+            self.cube14 = d
+
+        if self.rot_4 == 90:
+            a = self.cube04
+            self.cube04 = self.cube13
+            b = self.cube21
+            self.cube21 = self.cube12
+            self.cube13 = self.cube14
+            c = self.cube03
+            self.cube03 = b
+            self.cube12 = self.cube22
+            d = self.cube05
+            self.cube05 = a
+            self.cube22 = c
+            self.cube14 = d
+
+        if self.rot_5 == 90:
+            a = self.cube07
+            self.cube07 = self.cube16
+            b = self.cube24
+            self.cube24 = self.cube15
+            self.cube16 = self.cube17
+            d = self.cube06
+            self.cube06 = b
+            self.cube15 = self.cube25
+            c = self.cube08
+            self.cube08 = a
+            self.cube25 = d
+            self.cube17 = c
+
+        if self.rot_6 == 90:
+            a = self.cube01
+            self.cube01 = self.cube10
+            b = self.cube18
+            self.cube18 = self.cube09
+            self.cube10 = self.cube11
+            c = self.cube00
+            self.cube00 = b
+            self.cube09 = self.cube19
+            b = self.cube02
+            self.cube02 = a
+            self.cube19 = c
+            self.cube11 = b
+
+        if self.rot_7 == 90:
+            a = self.cube06
+            self.cube06 = self.cube15
+            b = self.cube00
+            self.cube00 = self.cube23
+            d = self.cube03
+            self.cube03 = a
+            self.cube23 = self.cube09
+            e = self.cube20
+            self.cube20 = b
+            self.cube15 = self.cube12
+            self.cube09 = e
+            self.cube12 = d
+
+        if self.rot_8 == 90:
+            a = self.cube24
+            self.cube24 = self.cube21
+            b = self.cube18
+            self.cube18 = self.cube20
+            self.cube21 = self.cube22
+            c = self.cube23
+            self.cube23 = b
+            self.cube20 = self.cube19
+            d = self.cube25
+            self.cube25 = a
+            self.cube19 = c
+            self.cube22 = d
+
         self.rot_0 = 0
         self.rot_1 = 0
         self.rot_2 = 0
@@ -296,6 +452,7 @@ class Apka(app.Canvas):
         self.rot_6 = 0
         self.rot_7 = 0
         self.rot_8 = 0
+        self.key_block = False
 
     def draw_shape(self, shape, translation=(0, 0, 0)):
         shape['program']['view'] = self.view
@@ -306,31 +463,50 @@ class Apka(app.Canvas):
 
     def on_key_press(self, event):
         shape = dict()
-        if event.key == "S":
+        if event.key == "S" and not self.key_block:
+            self.key_block = True
             self.obrx -= 30
             self.obrW = rotate(self.obrx, (1, 0, 0)).dot(rotate(self.obry, (0, 1, 0)))
-        if event.key == "D":
+        if event.key == "D" and not self.key_block:
+            self.key_block = True
             self.obry += 30
             self.obrW = rotate(self.obrx, (1, 0, 0)).dot(rotate(self.obry, (0, 1, 0)))
-        if event.key == "W":
+        if event.key == "W" and not self.key_block:
+            self.key_block = True
             self.obrx += 30
             self.obrW = rotate(self.obrx, (1, 0, 0)).dot(rotate(self.obry, (0, 1, 0)))
-        if event.key == "A":
+        if event.key == "A" and not self.key_block:
+            self.key_block = True
             self.obry -= 30
             self.obrW = rotate(self.obrx, (1, 0, 0)).dot(rotate(self.obry, (0, 1, 0)))
         #
-        if event.key == "Z":
+        if event.key == "Z" and not self.key_block:
+            self.key_block = True
             self.rot_0 += 90
-        if event.key == "X":
+        if event.key == "X" and not self.key_block:
+            self.key_block = True
             self.rot_1 += 90
-        if event.key == "C":
+        if event.key == "C" and not self.key_block:
+            self.key_block = True
             self.rot_2 += 90
-        if event.key == "V":
+        if event.key == "V" and not self.key_block:
+            self.key_block = True
             self.rot_3 += 90
-        if event.key == "B":
+        if event.key == "B" and not self.key_block:
+            self.key_block = True
             self.rot_4 += 90
-        if event.key == "N":
+        if event.key == "N" and not self.key_block:
+            self.key_block = True
             self.rot_5 += 90
+        if event.key == "J" and not self.key_block:
+            self.key_block = True
+            self.rot_6 += 90
+        if event.key == "K" and not self.key_block:
+            self.key_block = True
+            self.rot_7 += 90
+        if event.key == "L" and not self.key_block:
+            self.key_block = True
+            self.rot_8 += 90
         if event.key == "Q":
             if not self.block:
                 self.block = True
