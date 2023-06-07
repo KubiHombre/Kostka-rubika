@@ -14,7 +14,9 @@ class Apka(app.Canvas):
         self.shapes = []
         self.translations = []
         self.rotations = []
+        self.history = []
         self.i = 0
+        self.cofanie = 0
         self.key_block = False
         for i in range(26):
             self.rotations.append(np.eye(4, dtype=np.float32))
@@ -64,9 +66,6 @@ class Apka(app.Canvas):
         self.cube23 = 23
         self.cube24 = 24
         self.cube25 = 25
-
-
-
 
     def gen_scene(self):
         # model kostki
@@ -313,12 +312,12 @@ class Apka(app.Canvas):
                 self.rotations[self.i] = self.rotations[self.i].dot(
                     rotate(self.rot_5, (1, 0, 0)).dot(rotate(self.rot_8, (0, 0, 1))).dot(rotate(self.rot_2, (0, 1, 0))))
             if self.i == self.cube25:
-                self.rotations[self.i] = self.rotations[self.i].dot(rotate(self.rot_5, (1, 0, 0)).dot(rotate(self.rot_8, (0, 0, 1))).dot(
-                    rotate(self.rot_3, (0, 1, 0))))
+                self.rotations[self.i] = self.rotations[self.i].dot(
+                    rotate(self.rot_5, (1, 0, 0)).dot(rotate(self.rot_8, (0, 0, 1))).dot(
+                        rotate(self.rot_3, (0, 1, 0))))
             self.draw_shape(shape, trans)
             self.i += 1
         if self.rot_0 == 90:
-
             a = self.cube01
             self.cube01 = self.cube03
             b = self.cube02
@@ -442,17 +441,21 @@ class Apka(app.Canvas):
             self.cube25 = a
             self.cube19 = c
             self.cube22 = d
-
-        self.rot_0 = 0
-        self.rot_1 = 0
-        self.rot_2 = 0
-        self.rot_3 = 0
-        self.rot_4 = 0
-        self.rot_5 = 0
-        self.rot_6 = 0
-        self.rot_7 = 0
-        self.rot_8 = 0
-        self.key_block = False
+        if self.cofanie != 0:
+            self.cofanie += 1
+            if self.cofanie == 3:
+                self.cofanie = 0
+        else:
+            self.rot_0 = 0
+            self.rot_1 = 0
+            self.rot_2 = 0
+            self.rot_3 = 0
+            self.rot_4 = 0
+            self.rot_5 = 0
+            self.rot_6 = 0
+            self.rot_7 = 0
+            self.rot_8 = 0
+            self.key_block = False
 
     def draw_shape(self, shape, translation=(0, 0, 0)):
         shape['program']['view'] = self.view
@@ -482,46 +485,73 @@ class Apka(app.Canvas):
         #
         if event.key == "Z" and not self.key_block:
             self.key_block = True
+            self.history.append(0)
             self.rot_0 += 90
         if event.key == "X" and not self.key_block:
             self.key_block = True
+            self.history.append(1)
             self.rot_1 += 90
         if event.key == "C" and not self.key_block:
             self.key_block = True
+            self.history.append(2)
             self.rot_2 += 90
         if event.key == "V" and not self.key_block:
             self.key_block = True
+            self.history.append(3)
             self.rot_3 += 90
         if event.key == "B" and not self.key_block:
             self.key_block = True
+            self.history.append(4)
             self.rot_4 += 90
         if event.key == "N" and not self.key_block:
             self.key_block = True
+            self.history.append(5)
             self.rot_5 += 90
         if event.key == "J" and not self.key_block:
             self.key_block = True
+            self.history.append(6)
             self.rot_6 += 90
         if event.key == "K" and not self.key_block:
             self.key_block = True
+            self.history.append(7)
             self.rot_7 += 90
         if event.key == "L" and not self.key_block:
             self.key_block = True
+            self.history.append(8)
             self.rot_8 += 90
+        if (event.key == "P" and not self.key_block and len(self.history) != 0) or (
+                self.cofanie != 0 and not self.key_block and len(self.history)):
+            self.key_block = True
+            if self.history[len(self.history) - 1] == 0:
+                self.rot_0 = 90
+            if self.history[len(self.history) - 1] == 1:
+                self.rot_1 = 90
+            if self.history[len(self.history) - 1] == 2:
+                self.rot_2 = 90
+            if self.history[len(self.history) - 1] == 3:
+                self.rot_3 = 90
+            if self.history[len(self.history) - 1] == 4:
+                self.rot_4 = 90
+            if self.history[len(self.history) - 1] == 5:
+                self.rot_5 = 90
+            if self.history[len(self.history) - 1] == 6:
+                self.rot_6 = 90
+            if self.history[len(self.history) - 1] == 7:
+                self.rot_7 = 90
+            if self.history[len(self.history) - 1] == 8:
+                self.rot_8 = 90
+            self.history.pop()
+            self.cofanie += 1
         if event.key == "Q":
             if not self.block:
                 self.block = True
             else:
                 self.block = False
-        if event.key == "R":
-            self.obrx = 0
-            self.obry = 0
-            for i in range(26):
-                self.rotations.append(np.eye(4, dtype=np.float32))
 
     def on_timer(self, event):
         if not self.block:
             self.time += 1 / 60
-            self.view = rotate(self.time*180/np.pi, (0, 1, 0)).dot(translate((0, 0, -8)))
+            self.view = rotate(self.time * 180 / np.pi, (0, 1, 0)).dot(translate((0, 0, -8)))
         self.show()
 
 
