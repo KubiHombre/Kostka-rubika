@@ -32,7 +32,7 @@ class Apka(app.Canvas):
         self.rot_6 = 0
         self.rot_7 = 0
         self.rot_8 = 0
-        self.obrW = rotate(0, (0, 1, 0))
+        self.obrW = np.eye(4, dtype=np.float32)
         self.gen_scene()
         self.time = 0
         self.timer = app.Timer(1 / 60, connect=self.on_timer)
@@ -66,6 +66,12 @@ class Apka(app.Canvas):
         self.cube23 = 23
         self.cube24 = 24
         self.cube25 = 25
+
+        self.rotate_start = False
+        self.last_x = 0
+        self.last_y = 0
+        self.last_z = 0
+        self.rotate_z = False
 
     def gen_scene(self):
         # model kostki
@@ -464,6 +470,35 @@ class Apka(app.Canvas):
         shape['program']['model'] = self.model.dot(translate(translation).dot(self.rotations[self.i]))
         shape['program'].draw('triangles', shape['triangle_indices'], 36)
 
+    def on_mouse_press(self, event):
+        if event.button == 1:  # Lewy przycisk myszy
+            self.rotate_start = True
+            self.last_x = event.pos[0]
+            self.last_y = event.pos[1]
+        if event.button == 2 and not self.rotate_start:
+            self.rotate_z = True
+            self.last_z = event.pos[1]
+
+    def on_mouse_release(self, event):
+        if event.button == 1:  # Lewy przycisk myszy
+            self.rotate_start = False
+        if event.button == 2 and not self.rotate_start:
+            self.rotate_z = False
+
+    def on_mouse_move(self, event):
+        if self.rotate_start:
+            dx = (event.pos[0] - self.last_x) / 6
+            dy = (event.pos[1] - self.last_y) / 6
+            self.last_x = event.pos[0]
+            self.last_y = event.pos[1]
+            rotation = rotate(dx, (0, 1, 0)).dot(rotate(dy, (1, 0, 0)))
+            self.obrW = rotation.dot(self.obrW)
+        if self.rotate_z:
+            dz = (event.pos[1] - self.last_z) / 6
+            self.last_z = event.pos[1]
+            rotation = rotate(-dz, (0, 0, 1))
+            self.obrW = rotation.dot(self.obrW)
+
     def on_key_press(self, event):
         shape = dict()
         if event.key == "S" and not self.key_block:
@@ -482,7 +517,7 @@ class Apka(app.Canvas):
             self.key_block = True
             self.obry -= 30
             self.obrW = rotate(self.obrx, (1, 0, 0)).dot(rotate(self.obry, (0, 1, 0)))
-        #
+
         if event.key == "Z" and not self.key_block:
             self.key_block = True
             self.history.append(0)
