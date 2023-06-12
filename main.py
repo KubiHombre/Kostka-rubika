@@ -14,12 +14,12 @@ class Apka(app.Canvas):
         self.shapes = []
         self.translations = []
         self.rotations = []
+        for i in range(29):
+            self.rotations.append(np.eye(4, dtype=np.float32))
         self.history = []
         self.i = 0
         self.cofanie = 0
         self.key_block = False
-        for i in range(26):
-            self.rotations.append(np.eye(4, dtype=np.float32))
         self.block = True
         self.obrx = 0
         self.obry = 0
@@ -47,104 +47,214 @@ class Apka(app.Canvas):
         self.hist_i = 0
         self.good_time = 0.0
 
+        self.show_axis = True
+
     def gen_scene(self):
         # model kostki
 
         # ścianka 0
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((0, 0, 1.05))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((0, 1.05, 1.05))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((0, -1.05, 1.05))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((1.05, 0, 1.05))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((1.05, 1.05, 1.05))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((1.05, -1.05, 1.05))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((-1.05, 0, 1.05))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((-1.05, 1.05, 1.05))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((-1.05, -1.05, 1.05))
 
         # ścianka 1
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((0, 0, -1.05))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((0, 1.05, -1.05))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((0, -1.05, -1.05))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((1.05, 0, -1.05))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((1.05, 1.05, -1.05))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((1.05, -1.05, -1.05))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((-1.05, 0, -1.05))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((-1.05, 1.05, -1.05))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((-1.05, -1.05, -1.05))
 
         # ścianka 2
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((0, 1.05, 0))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((0, -1.05, 0))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((1.05, 0, 0))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((1.05, 1.05, 0))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((1.05, -1.05, 0))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((-1.05, 0, 0))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((-1.05, 1.05, 0))
-        self.shapes.append(self.gen_cube())
+        self.shapes.append(self.gen_cube(0))
         self.translations.append((-1.05, -1.05, 0))
+# osie
+        self.shapes.append(self.gen_cube(1))
+        self.translations.append((3, 0, 0))
+        self.shapes.append(self.gen_cube(2))
+        self.translations.append((0, 3, 0))
+        self.shapes.append(self.gen_cube(3))
+        self.translations.append((0, 0, 3))
 
-    def gen_cube(self):
+    def gen_cube(self, axis):
         shape = dict()
         shape['program'] = gloo.Program(self.vertex_shader, self.fragment_shader, 24)
 
         # Generowanie płaszczyzn
-        colors = np.array([
-            # Ścianka 1 (przednia)
-            [1, 0, 0, 0],  # Czerwony
-            [1, 0, 0, 0],  # Czerwony
-            [1, 0, 0, 0],  # Czerwony
-            [1, 0, 0, 0],  # Czerwony
-            # Ścianka 2 (tylna)
-            [0, 1, 0, 0],  # Zielony
-            [0, 1, 0, 0],  # Zielony
-            [0, 1, 0, 0],  # Zielony
-            [0, 1, 0, 0],  # Zielony
-            # Ścianka 3 (lewa)
-            [0, 0, 1, 0],  # Niebieski
-            [0, 0, 1, 0],  # Niebieski
-            [0, 0, 1, 0],  # Niebieski
-            [0, 0, 1, 0],  # Niebieski
-            # Ścianka 4 (prawa)
-            [1, 1, 0, 0],  # Żółty
-            [1, 1, 0, 0],  # Żółty
-            [1, 1, 0, 0],  # Żółty
-            [1, 1, 0, 0],  # Żółty
-            # Ścianka 5 (górna)
-            [1, 0, 1, 0],  # Magenta
-            [1, 0, 1, 0],  # Magenta
-            [1, 0, 1, 0],  # Magenta
-            [1, 0, 1, 0],  # Magenta
-            # Ścianka 6 (dolna)
-            [0, 1, 1, 0],  # Cyjan
-            [0, 1, 1, 0],  # Cyjan
-            [0, 1, 1, 0],  # Cyjan
-            [0, 1, 1, 0]  # Cyjan
-        ], dtype=np.float32)
+        if axis == 0:
+            colors = np.array([
+                # Ścianka 1 (przednia)
+                [1, 0, 0, 0],  # Czerwony
+                [1, 0, 0, 0],  # Czerwony
+                [1, 0, 0, 0],  # Czerwony
+                [1, 0, 0, 0],  # Czerwony
+                # Ścianka 2 (tylna)
+                [0, 1, 0, 0],  # Zielony
+                [0, 1, 0, 0],  # Zielony
+                [0, 1, 0, 0],  # Zielony
+                [0, 1, 0, 0],  # Zielony
+                # Ścianka 3 (lewa)
+                [0, 0, 1, 0],  # Niebieski
+                [0, 0, 1, 0],  # Niebieski
+                [0, 0, 1, 0],  # Niebieski
+                [0, 0, 1, 0],  # Niebieski
+                # Ścianka 4 (prawa)
+                [1, 1, 0, 0],  # Żółty
+                [1, 1, 0, 0],  # Żółty
+                [1, 1, 0, 0],  # Żółty
+                [1, 1, 0, 0],  # Żółty
+                # Ścianka 5 (górna)
+                [1, 0, 1, 0],  # Magenta
+                [1, 0, 1, 0],  # Magenta
+                [1, 0, 1, 0],  # Magenta
+                [1, 0, 1, 0],  # Magenta
+                # Ścianka 6 (dolna)
+                [0, 1, 1, 0],  # Cyjan
+                [0, 1, 1, 0],  # Cyjan
+                [0, 1, 1, 0],  # Cyjan
+                [0, 1, 1, 0]  # Cyjan
+            ], dtype=np.float32)
+
+        elif axis == 1:
+            colors = np.array([
+                # Ścianka 1 (przednia)
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+                # Ścianka 2 (tylna)
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+                # Ścianka 3 (lewa)
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+                # Ścianka 4 (prawa)
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+                # Ścianka 5 (górna)
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+                # Ścianka 6 (dolna)
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+                [1, 0, 0, 0.9],  # Czerwony
+            ], dtype=np.float32)
+        if axis == 2:
+            colors = np.array([
+                # Ścianka 1 (przednia)
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+                # Ścianka 2 (tylna)
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+                # Ścianka 3 (lewa)
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+                # Ścianka 4 (prawa)
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+                # Ścianka 5 (górna)
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+                # Ścianka 6 (dolna)
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+                [0, 1, 0, 0.5],  # Zielony
+            ], dtype=np.float32)
+        if axis == 3:
+            colors = np.array([
+                # Ścianka 1 (przednia)
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+                # Ścianka 2 (tylna)
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+                # Ścianka 3 (lewa)
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+                # Ścianka 4 (prawa)
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+                # Ścianka 5 (górna)
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+                # Ścianka 6 (dolna)
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+                [0, 0, 1, 0.5],  # Niebieski
+            ], dtype=np.float32)
 
         positions = np.array([
             [-0.5, -0.5, -0.5],  # Wierzchołek 0
@@ -178,6 +288,8 @@ class Apka(app.Canvas):
             [-0.5, 0.5, 0.5],  # Wierzchołek 19
         ], dtype=np.float32)
 
+        if axis != 0:
+            positions *= 0.5
         # Macierz przechowująca indeksy wierzchołków, które tworzą ścianki sześcianu
         indices = np.array([
             # Ścianka 1 (przednia)
@@ -316,7 +428,7 @@ class Apka(app.Canvas):
             self.cube[12] = self.cube[11]
             b = self.cube[13]
             self.cube[13] = self.cube[14]
-            self.cube[14]= self.cube[17]
+            self.cube[14] = self.cube[17]
             c = self.cube[15]
             self.cube[15] = a
             d = self.cube[16]
@@ -438,8 +550,6 @@ class Apka(app.Canvas):
         if self.hist_i + 1 == len(self.history):
             self.hist_check = False
             self.hist_i = 0
-
-
 
     def draw_shape(self, shape, translation=(0, 0, 0)):
         shape['program']['view'] = self.view
