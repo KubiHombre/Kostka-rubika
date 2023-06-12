@@ -3,7 +3,7 @@ import numpy as np
 from vispy.util.transforms import rotate, translate, perspective
 
 
-class Apka(app.Canvas):
+class Kostka(app.Canvas):
     def __init__(self):
         super().__init__(title="Kostka Rubika", size=(800, 800))
         gloo.set_state(depth_test=True)
@@ -675,5 +675,5 @@ class Apka(app.Canvas):
         self.show()
 
 
-apka = Apka()
+kostka = Kostka()
 app.run()
