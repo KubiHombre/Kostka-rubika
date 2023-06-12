@@ -1,26 +1,37 @@
 # Kostka-rubika
 
 
-Komputerowa symulacja kostki rubika
+Komputerowa symulacja kostki rubika.
 
 
-do tworzenia programu zostały wykorzystane biblioteki
-vispy oraz numpy
+Do tworzenia programu zostały wykorzystane biblioteki
+vispy oraz numpy.
 
 
 Podstawowe sterowanie kostką:
 
-LPM – podgląd aktualnego ustawienia kostki – włączenie/wyłączenie automatycznego obrotu 
+LPM – wciśnięcie, aktywuje obracanie wokół osi X (góra, dół) i Y (lewo, prawo).
+PPM – wciśnięcie, aktywuje obracanie wokół osi Z (góra, dół).
 
-W / A / S / D – ręczne obracanie kostki podgląd na sąsiednią ściankę o 30 stopni
+W / S – obracanie kostki o 30 stopni na naciśnięcie w górę lub dół.
+A / D - obracanie kostki o 30 stopni na naciśnięcie w prawo lub lewo.
 
 P – umożliwia cofnięcie ruchu
-
-Z/X/C/V/B/N/J/K/L – układanie kostki – przesuwanie poszczególnymi ściankami 
-
 R – przywraca podstawowe ustawienie kostki – całkowicie ułożona 
 
+Oznaczenia osi (małe sześciany oznaczają strzałki osi współrzędnych, początek osi w środku kostki:
+  X- czerwony 
+  Y- zielony
+  Z- niebieski
 
-![image](https://github.com/KubiHombre/Kostka-rubika/assets/106477285/a4ab5529-2829-4cc3-be0c-da8415a65c1e)
-![image](https://github.com/KubiHombre/Kostka-rubika/assets/106477285/bfd083f3-c772-488d-95d0-9cd29381ad87)
+Układanie kostki:
+  J / K / L  obracanie środkowymi ściankami kolejno wokół osi: X, Y, Z
+  B / C / Z  obracanie środkowymi ściankami kolejno wokół osi: X, Y, Z, bliżej strzałki osi
+  N / V / X  obracanie środkowymi ściankami kolejno wokół osi: X, Y, Z, po przeciwnej stronie niż strzałka osi
+  
+
+![kostka1](https://github.com/KubiHombre/Kostka-rubika/assets/133357700/05304fca-63bb-43af-95c5-aa0f2eb7e631)
+![kostka2](https://github.com/KubiHombre/Kostka-rubika/assets/133357700/a63f98ca-f126-4488-8a6c-a4106385e47c)
+
+
 
