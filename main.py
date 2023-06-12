@@ -289,7 +289,7 @@ class Apka(app.Canvas):
         ], dtype=np.float32)
 
         if axis != 0:
-            positions *= 0.5
+            positions *= 0.2
         # Macierz przechowująca indeksy wierzchołków, które tworzą ścianki sześcianu
         indices = np.array([
             # Ścianka 1 (przednia)
